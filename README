@@ -1,0 +1,20 @@
+MediaDevilry is a working name for a new service for image
+manipulation written in node.js.
+
+== Planned features ==
+
+* Rotation to arbitrary orientations
+* Cropping
+
+== Possible features ==
+
+* Filters
+** Sharpening
+** Blurring
+** Hue changes
+
+== Support targets ==
+
+* Use in MediaWiki as source for new images
+* Use in MediaWiki as source for image edits
+* Use in MediaWiki in inline file transclusions

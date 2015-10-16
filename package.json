@@ -1,0 +1,23 @@
+{
+	"name": "MediaDevilry",
+	"version": "0.0.1",
+	"description": "Image manipulation API",
+	"license": "AGPL-3.0",
+	"author": {
+		"name": "Mark Holmquist",
+		"email": "mtraceur@member.fsf.org",
+		"url": "https://mediawiki.org/wiki/User:MarkTraceur"
+	},
+	"contributors": [],
+	"files": [],
+	"main": "server",
+	"dependencies": {
+		"express": "4.9.5",
+		"jade": "1.7.0",
+		"gm": "0.1.3",
+		"connect-busboy": "0.0.2"
+	},
+	"engines": {
+		"node": "0.10.30"
+	}
+}
