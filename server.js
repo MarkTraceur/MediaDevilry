@@ -7,6 +7,7 @@ var server,
 	express = require( 'express' ),
 	busboy = require( 'connect-busboy' ),
 
+	transforms = require( './transforms' ),
 	routes = require( './routes' ),
 
 	app = express();
@@ -20,7 +21,7 @@ app.get( '/', function ( req, res ) {
 	res.render( 'index', {} );
 } );
 
-routes.register( app );
+routes.register( app, transforms );
 
 server = app.listen( 2666, function () {
 	console.log( 'Listening on port %d', server.address().port );

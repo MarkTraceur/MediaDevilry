@@ -1,0 +1,22 @@
+html
+	head
+		title Image transformation API
+	body
+		h1 Image transformation API
+		form(method="POST", enctype="multipart/form-data")
+			div
+				h2 file
+				input(type="file", name="file")
+			each arg in args
+				div
+					h2= arg.name
+					if arg.type == "select"
+						select(name=arg.name)
+							each option in arg.options
+								option(value=option)= option
+					else if arg.type == "number"
+						input(type="text", name=arg.name)
+					else if arg.type == "string"
+						input(type="text", name=arg.name)
+			div
+				input(type="submit")

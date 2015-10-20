@@ -15,10 +15,10 @@ fs
 
 module.exports = {};
 
-module.exports.register = function ( app ) {
+module.exports.register = function ( app, transforms ) {
 	Object.keys( routes ).forEach( function ( routeName ) {
 		if ( 'register' in routes[routeName] ) {
-			routes[routeName].register( app );
+			routes[routeName].register( app, transforms );
 		}
 	} );
 };
