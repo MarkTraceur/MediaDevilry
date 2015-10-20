@@ -27,7 +27,7 @@ module.exports.register = function ( app, transforms ) {
 	app.post( '/transform', function ( req, res ) {
 		var infile, actions, args = {};
 
-		function tryConvert() {
+		req.busboy.on( 'finish', function () {
 			var i, transform, j, arg;
 
 			if ( !infile || !actions ) {
@@ -62,7 +62,7 @@ module.exports.register = function ( app, transforms ) {
 			imstream.stream( function ( err, stdout, stderr ) {
 				stdout.pipe( res );
 			} );
-		}
+		} );
 
 		req.busboy.on( 'field', function ( fieldname, val ) {
 			var re, matches, actname;
@@ -89,8 +89,6 @@ module.exports.register = function ( app, transforms ) {
 					}
 				}
 			}
-
-			tryConvert();
 		} );
 
 		req.busboy.on( 'file', function ( fieldname, file, filename, enc, type ) {
@@ -100,7 +98,6 @@ module.exports.register = function ( app, transforms ) {
 			}
 
 			infile = file;
-			tryConvert();
 		} );
 
 		req.pipe( req.busboy );
