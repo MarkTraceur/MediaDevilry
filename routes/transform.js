@@ -1,18 +1,15 @@
-var im = require( 'gm' ).subClass( { imageMagick: true } );
-
-module.exports = { name: 'echo' };
+var im = require( 'gm' ).subClass( { imageMagick: true } ),
+	concat = require( 'concat-stream' );
 
 module.exports.register = function ( app, transforms ) {
 	app.get( '/transform', function ( req, res ) {
 		var i, j, transform, arg,
 			args = [];
 
-		args.push( { name: 'action', type: 'select', required: true, options: [] } );
+		args.push( { name: 'action', type: 'string', required: true } );
 
 		for ( i in transforms.transforms ) {
 			transform = transforms.transforms[i];
-
-			args[0].options.push( i );
 
 			for ( j in transform.args ) {
 				arg = transform.args[j];
@@ -28,11 +25,8 @@ module.exports.register = function ( app, transforms ) {
 		var infile, actions, args = {};
 
 		req.busboy.on( 'finish', function () {
-			var i, transform, j, arg;
-
-			if ( !infile || !actions ) {
-				return;
-			}
+			var i, transform, j, arg,
+				imstream = im( infile );
 
 			for ( i in actions ) {
 				transform = transforms.transforms[i];
@@ -50,13 +44,9 @@ module.exports.register = function ( app, transforms ) {
 				}
 			}
 
-			var imstream = im( infile );
-
 			for ( i in actions ) {
-				action = actions[i];
-				transform = transforms.transform[action];
-
-				imstream = transform.perform( imstream, args[action] );
+				transform = transforms.transforms[i];
+				imstream = transform.perform( imstream, args[i] );
 			}
 
 			imstream.stream( function ( err, stdout, stderr ) {
@@ -85,7 +75,8 @@ module.exports.register = function ( app, transforms ) {
 					matches = fieldname.match( re );
 
 					if ( matches !== null ) {
-						args[actname] = matches[1];
+						args[actname] = args[actname] || {};
+						args[actname][matches[1]] = val;
 					}
 				}
 			}
@@ -97,7 +88,9 @@ module.exports.register = function ( app, transforms ) {
 				return;
 			}
 
-			infile = file;
+			file.pipe( concat( function ( data ) {
+				infile = data;
+			} ) );
 		} );
 
 		req.pipe( req.busboy );

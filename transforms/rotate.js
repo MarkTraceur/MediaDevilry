@@ -7,5 +7,5 @@ module.exports = {
 };
 
 module.exports.perform = function ( imstream, args ) {
-	return imstream.rotate( args.color, args.degs );
+	return imstream.rotate( args.color, args.degrees );
 };
